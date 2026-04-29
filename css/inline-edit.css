@@ -1,0 +1,174 @@
+/* =============================================
+   INLINE-EDIT.CSS — Edição inline nos detalhes
+   ============================================= */
+
+/* Editable field wrapper */
+.editable-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.editable-value {
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all .2s;
+    border: 1px solid transparent;
+    flex: 1;
+}
+
+.editable-value:hover {
+    background: var(--bg-input);
+    border-color: var(--border);
+}
+
+.editable-value:hover::after {
+    content: ' ✏️';
+    font-size: 10px;
+    opacity: .6;
+}
+
+/* Inline input (when editing) */
+.inline-input {
+    width: 100%;
+    padding: 6px 10px;
+    background: var(--bg-input);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    box-shadow: 0 0 0 3px var(--accent-glow);
+    transition: all .2s;
+}
+
+.inline-input:focus {
+    border-color: var(--accent);
+}
+
+.inline-textarea {
+    width: 100%;
+    padding: 8px 10px;
+    background: var(--bg-input);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    box-shadow: 0 0 0 3px var(--accent-glow);
+    min-height: 60px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+/* Editable title */
+.editable-title {
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: all .2s;
+    border: 1px solid transparent;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.editable-title:hover {
+    background: var(--bg-input);
+    border-color: var(--border);
+}
+
+.inline-title-input {
+    width: 100%;
+    padding: 6px 10px;
+    background: var(--bg-input);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 17px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+/* Priority selector inline */
+.priority-select-wrapper {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.priority-pill {
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--bg-input);
+    color: var(--text-secondary);
+    transition: all .3s;
+}
+
+.priority-pill:hover {
+    border-color: var(--accent);
+}
+
+.priority-pill.active-alta {
+    background: rgba(225,112,85,.2);
+    color: var(--danger);
+    border-color: var(--danger);
+}
+
+.priority-pill.active-media {
+    background: rgba(253,203,110,.2);
+    color: var(--warning);
+    border-color: var(--warning);
+}
+
+.priority-pill.active-baixa {
+    background: rgba(0,184,148,.2);
+    color: var(--success);
+    border-color: var(--success);
+}
+
+/* Save hint */
+.edit-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    padding: 6px 10px;
+    background: var(--bg-input);
+    border-radius: 8px;
+    border: 1px dashed var(--border);
+}
+
+.edit-hint-icon {
+    font-size: 13px;
+}
+
+/* Inline date input */
+input[type="date"].inline-input {
+    cursor: pointer;
+}
+
+/* Auto-save indicator */
+.auto-saved {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--success);
+    font-weight: 600;
+    animation: fadeIn .3s ease;
+    padding: 2px 8px;
+    background: rgba(0,184,148,.1);
+    border-radius: 6px;
+}

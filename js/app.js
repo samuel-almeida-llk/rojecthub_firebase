@@ -110,7 +110,7 @@ async function deleteClient(id) {
 window.openClientDetail = function(id) { store.setCurrentClientId(id); showPage('client-detail'); };
 
 // =========================================================
-// PROJETOS + KANBAN
+// PROJETOS — Kanban Render
 // =========================================================
 function renderClientDetail() {
     const c = store.data.clients.find(x => x.id === store.currentClientId); if (!c) return;
@@ -181,22 +181,213 @@ async function deleteProject(id) {
     showToast('Excluído!'); renderClientDetail(); updateBadges();
 }
 
+// =========================================================
+// PROJECT DETAIL — Edição Inline
+// =========================================================
 window.openProjectDetail = function(id) {
     store.setCurrentProjectId(id);
     const c = store.data.clients.find(x => x.id === store.currentClientId);
-    const p = c?.projects?.find(x => x.id === id); if (!p) return;
-    document.getElementById('detail-project-name').textContent = p.name;
+    const p = c?.projects?.find(x => x.id === id);
+    if (!p) return;
+
+    document.getElementById('detail-project-name').innerHTML = `
+        <span class="editable-title" onclick="inlineEditTitle('${id}')" id="proj-title-display">${sanitize(p.name)}</span>
+    `;
+
     let th = (p.tasks || []).map((t, i) => `<div class="task-item ${t.done ? 'done' : ''}"><button class="task-check ${t.done ? 'checked' : ''}" onclick="toggleTask('${id}',${i})">✓</button><span class="task-text">${sanitize(t.text)}</span><button class="task-delete" onclick="deleteTask('${id}',${i})">✕</button></div>`).join('');
-    document.getElementById('project-detail-body').innerHTML = `<div class="project-detail-section"><h4>Informações</h4><div class="detail-row"><span class="detail-label">Status:</span><div class="status-select-wrapper">${Object.keys(STATUS_LABELS).map(s => `<button class="status-pill ${p.status === s ? 'active-' + s : ''}" onclick="chgStatus('${id}','${s}')">${STATUS_LABELS[s]}</button>`).join('')}</div></div><div class="detail-row"><span class="detail-label">Prioridade:</span><span>${PRIORITY_LABELS[p.priority]}</span></div>${p.owner ? `<div class="detail-row"><span class="detail-label">Responsável:</span>${sanitize(p.owner)}</div>` : ''}${p.startDate ? `<div class="detail-row"><span class="detail-label">Início:</span>${formatDate(p.startDate)}</div>` : ''}${p.deadline ? `<div class="detail-row"><span class="detail-label">Entrega:</span>${formatDate(p.deadline)}</div>` : ''}</div>${p.description ? `<div class="project-detail-section"><h4>Descrição</h4><p style="font-size:14px;line-height:1.7;color:var(--text-secondary)">${sanitize(p.description)}</p></div>` : ''}<div class="project-detail-section"><h4>Tarefas (${(p.tasks || []).filter(t => t.done).length}/${(p.tasks || []).length})</h4>${p.tasks?.length ? `<div class="progress-bar" style="margin-bottom:12px"><div class="progress-fill purple" style="width:${getTP(p)}%"></div></div>` : ''}<div class="task-list">${th}</div><div class="add-task-input"><input type="text" id="new-task-input" placeholder="Nova tarefa..." onkeydown="if(event.key==='Enter')addTask('${id}')"><button class="btn btn-primary btn-sm" onclick="addTask('${id}')">+</button></div></div>`;
+
+    document.getElementById('project-detail-body').innerHTML = `
+        <div class="edit-hint"><span class="edit-hint-icon">💡</span> Clique em qualquer campo para editar</div>
+
+        <div class="project-detail-section" style="margin-top:16px">
+            <h4>Informações</h4>
+
+            <div class="detail-row">
+                <span class="detail-label">Status:</span>
+                <div class="status-select-wrapper">
+                    ${Object.keys(STATUS_LABELS).map(s => `<button class="status-pill ${p.status === s ? 'active-' + s : ''}" onclick="chgStatus('${id}','${s}')">${STATUS_LABELS[s]}</button>`).join('')}
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <span class="detail-label">Prioridade:</span>
+                <div class="priority-select-wrapper">
+                    ${Object.keys(PRIORITY_LABELS).map(pr => `<button class="priority-pill ${p.priority === pr ? 'active-' + pr : ''}" onclick="chgPriority('${id}','${pr}')">${PRIORITY_LABELS[pr]}</button>`).join('')}
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <span class="detail-label">Responsável:</span>
+                <div class="editable-field">
+                    <span class="editable-value" onclick="inlineEdit('${id}','owner','text')" id="field-owner">${sanitize(p.owner || '—')}</span>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <span class="detail-label">Início:</span>
+                <div class="editable-field">
+                    <span class="editable-value" onclick="inlineEdit('${id}','startDate','date')" id="field-startDate">${p.startDate ? formatDate(p.startDate) : '—'}</span>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <span class="detail-label">Entrega:</span>
+                <div class="editable-field">
+                    <span class="editable-value" onclick="inlineEdit('${id}','deadline','date')" id="field-deadline">${p.deadline ? formatDate(p.deadline) : '—'}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-detail-section">
+            <h4>Descrição</h4>
+            <div class="editable-value" onclick="inlineEdit('${id}','description','textarea')" id="field-description" style="font-size:14px;line-height:1.7;color:var(--text-secondary);min-height:40px;padding:8px">
+                ${sanitize(p.description || 'Clique para adicionar descrição...')}
+            </div>
+        </div>
+
+        <div class="project-detail-section">
+            <h4>Tarefas (${(p.tasks || []).filter(t => t.done).length}/${(p.tasks || []).length})</h4>
+            ${p.tasks?.length ? `<div class="progress-bar" style="margin-bottom:12px"><div class="progress-fill purple" style="width:${getTP(p)}%"></div></div>` : ''}
+            <div class="task-list">${th}</div>
+            <div class="add-task-input">
+                <input type="text" id="new-task-input" placeholder="Nova tarefa..." onkeydown="if(event.key==='Enter')addTask('${id}')">
+                <button class="btn btn-primary btn-sm" onclick="addTask('${id}')">+</button>
+            </div>
+        </div>
+
+        <div id="auto-save-indicator"></div>
+    `;
+
     openModal('modal-project-detail');
 };
 
+// --- Inline Edit: Title ---
+window.inlineEditTitle = function(pid) {
+    const c = store.data.clients.find(x => x.id === store.currentClientId);
+    const p = c?.projects?.find(x => x.id === pid);
+    if (!p) return;
+
+    const el = document.getElementById('proj-title-display');
+    const oldVal = p.name;
+    el.outerHTML = `<input type="text" class="inline-title-input" id="inline-title" value="${sanitize(oldVal)}">`;
+
+    const input = document.getElementById('inline-title');
+    input.focus();
+    input.select();
+
+    async function save() {
+        const newVal = input.value.trim();
+        if (newVal && newVal !== oldVal) {
+            p.name = newVal;
+            store.logActivity(`<strong>${sanitize(oldVal)}</strong> → <strong>${sanitize(newVal)}</strong>`);
+            await store.saveData();
+            showAutoSaved();
+            renderClientDetail();
+        }
+        document.getElementById('detail-project-name').innerHTML = `
+            <span class="editable-title" onclick="inlineEditTitle('${pid}')" id="proj-title-display">${sanitize(p.name)}</span>
+        `;
+    }
+
+    input.addEventListener('blur', save);
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+        if (e.key === 'Escape') { input.value = oldVal; input.blur(); }
+    });
+};
+
+// --- Inline Edit: Generic field ---
+window.inlineEdit = function(pid, field, type) {
+    const c = store.data.clients.find(x => x.id === store.currentClientId);
+    const p = c?.projects?.find(x => x.id === pid);
+    if (!p) return;
+
+    const el = document.getElementById(`field-${field}`);
+    if (!el) return;
+
+    const oldVal = p[field] || '';
+
+    if (type === 'textarea') {
+        el.outerHTML = `<textarea class="inline-textarea" id="inline-${field}">${oldVal}</textarea>`;
+    } else if (type === 'date') {
+        el.outerHTML = `<input type="date" class="inline-input" id="inline-${field}" value="${oldVal}">`;
+    } else {
+        el.outerHTML = `<input type="text" class="inline-input" id="inline-${field}" value="${oldVal}" placeholder="Digite...">`;
+    }
+
+    const input = document.getElementById(`inline-${field}`);
+    input.focus();
+    if (type === 'text') input.select();
+
+    async function save() {
+        const newVal = input.value.trim();
+        if (newVal !== oldVal) {
+            p[field] = newVal;
+            await store.saveData();
+            showAutoSaved();
+            renderClientDetail();
+        }
+        let displayVal = '';
+        if (type === 'date') {
+            displayVal = p[field] ? formatDate(p[field]) : '—';
+        } else if (field === 'description') {
+            displayVal = sanitize(p[field] || 'Clique para adicionar descrição...');
+        } else {
+            displayVal = sanitize(p[field] || '—');
+        }
+
+        const wrapper = document.createElement(field === 'description' ? 'div' : 'span');
+        wrapper.className = 'editable-value';
+        wrapper.id = `field-${field}`;
+        wrapper.onclick = () => window.inlineEdit(pid, field, type);
+        wrapper.innerHTML = displayVal;
+        if (field === 'description') {
+            wrapper.style.cssText = 'font-size:14px;line-height:1.7;color:var(--text-secondary);min-height:40px;padding:8px';
+        }
+        input.replaceWith(wrapper);
+    }
+
+    input.addEventListener('blur', save);
+    input.addEventListener('keydown', e => {
+        if (type !== 'textarea' && e.key === 'Enter') { e.preventDefault(); input.blur(); }
+        if (e.key === 'Escape') { input.value = oldVal; input.blur(); }
+    });
+};
+
+// --- Change Status inline ---
 window.chgStatus = async function(pid, ns) {
     const c = store.data.clients.find(x => x.id === store.currentClientId);
     const p = c?.projects?.find(x => x.id === pid); if (!p) return;
-    p.status = ns; store.logActivity(`<strong>${sanitize(p.name)}</strong> → <strong>${STATUS_LABELS[ns]}</strong>`);
-    await store.saveData(); window.openProjectDetail(pid); renderClientDetail();
+    p.status = ns;
+    store.logActivity(`<strong>${sanitize(p.name)}</strong> → <strong>${STATUS_LABELS[ns]}</strong>`);
+    await store.saveData();
+    showAutoSaved();
+    window.openProjectDetail(pid);
+    renderClientDetail();
 };
+
+// --- Change Priority inline ---
+window.chgPriority = async function(pid, np) {
+    const c = store.data.clients.find(x => x.id === store.currentClientId);
+    const p = c?.projects?.find(x => x.id === pid);
+    if (!p || p.priority === np) return;
+    p.priority = np;
+    store.logActivity(`<strong>${sanitize(p.name)}</strong> prioridade → <strong>${PRIORITY_LABELS[np]}</strong>`);
+    await store.saveData();
+    showAutoSaved();
+    window.openProjectDetail(pid);
+    renderClientDetail();
+};
+
+// --- Auto-save indicator ---
+function showAutoSaved() {
+    const el = document.getElementById('auto-save-indicator');
+    if (el) {
+        el.innerHTML = '<span class="auto-saved">✅ Salvo automaticamente</span>';
+        setTimeout(() => { if (el) el.innerHTML = ''; }, 2000);
+    }
+}
+
 window.deleteProjectFromDetail = function() { window.confirmDeleteProject(store.currentProjectId); };
 window.editProjectFromDetail = function() { closeModal('modal-project-detail'); window.editProject(store.currentProjectId); };
 
@@ -287,8 +478,6 @@ function renderDashboard() {
     rc.innerHTML = !re.length ? '<p style="color:var(--text-muted);font-size:13px;padding:20px;text-align:center">Nenhum projeto</p>' : re.map(p => `<div class="activity-item" style="cursor:pointer" onclick="goToProject('${p.clientId}','${p.id}')"><span class="status-dot ${p.status}"></span><div style="flex:1"><div style="font-size:13px;font-weight:600">${sanitize(p.name)}</div><div style="font-size:11px;color:var(--text-muted)">${sanitize(p.clientName)}</div></div><span class="priority-badge priority-${p.priority}">${p.priority}</span></div>`).join('');
     const ac = document.getElementById('recent-activity');
     ac.innerHTML = !store.data.activities.length ? '<p style="color:var(--text-muted);font-size:13px;padding:20px;text-align:center">Nenhuma atividade</p>' : store.data.activities.slice(0, 8).map(a => `<div class="activity-item"><div class="activity-dot" style="background:var(--accent)"></div><span class="activity-text">${a.text}</span><span class="activity-time">${timeAgo(new Date(a.time))}</span></div>`).join('');
-
-    // Renderizar gráficos
     renderCharts();
     updateBadges();
 }
@@ -302,7 +491,7 @@ function renderAllProjects() {
     const ct = document.getElementById('all-projects-list');
     const all = store.data.clients.flatMap(c => (c.projects || []).map(p => ({ ...p, clientName: c.name, clientId: c.id })));
     if (!all.length) { ct.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📁</div><h3>Nenhum projeto</h3></div>'; return; }
-    ct.innerHTML = `<div style="display:grid;gap:10px">${all.sort((a, b) => PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]).map(p => `<div class="activity-item" style="cursor:pointer" onclick="currentClientId='${p.clientId}';openProjectDetail('${p.id}')"><span class="status-dot ${p.status}"></span><div style="flex:1"><div style="font-size:14px;font-weight:600">${sanitize(p.name)}</div><div style="font-size:12px;color:var(--text-muted)">${sanitize(p.clientName)}${p.owner ? ' • ' + sanitize(p.owner) : ''}${p.deadline ? ' • 📅 ' + formatDate(p.deadline) : ''}</div></div><span class="priority-badge priority-${p.priority}">${p.priority}</span></div>`).join('')}</div>`;
+    ct.innerHTML = `<div style="display:grid;gap:10px">${all.sort((a, b) => PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]).map(p => `<div class="activity-item" style="cursor:pointer" onclick="store.setCurrentClientId('${p.clientId}');openProjectDetail('${p.id}')"><span class="status-dot ${p.status}"></span><div style="flex:1"><div style="font-size:14px;font-weight:600">${sanitize(p.name)}</div><div style="font-size:12px;color:var(--text-muted)">${sanitize(p.clientName)}${p.owner ? ' • ' + sanitize(p.owner) : ''}${p.deadline ? ' • 📅 ' + formatDate(p.deadline) : ''}</div></div><span class="priority-badge priority-${p.priority}">${p.priority}</span></div>`).join('')}</div>`;
 }
 
 // =========================================================
