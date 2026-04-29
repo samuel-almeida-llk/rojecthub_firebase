@@ -1,0 +1,60 @@
+/* =============================================
+   VARIABLES.CSS — Custom Properties (Temas)
+   ============================================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+[data-theme="dark"] {
+    --bg-primary: #0f1117;
+    --bg-secondary: #1a1d27;
+    --bg-card: #1e2130;
+    --bg-card-hover: #252840;
+    --bg-input: #252840;
+    --border: #2d3148;
+    --text-primary: #e8eaf0;
+    --text-secondary: #9499b3;
+    --text-muted: #6b7094;
+    --accent: #6c5ce7;
+    --accent-glow: rgba(108,92,231,0.3);
+    --success: #00b894;
+    --warning: #fdcb6e;
+    --danger: #e17055;
+    --info: #74b9ff;
+    --gradient-1: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    --gradient-2: linear-gradient(135deg, #00b894, #55efc4);
+    --gradient-3: linear-gradient(135deg, #e17055, #fab1a0);
+    --gradient-4: linear-gradient(135deg, #0984e3, #74b9ff);
+    --shadow: 0 4px 24px rgba(0,0,0,0.3);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.4);
+    --topbar-bg: rgba(15,17,23,0.85);
+    --modal-overlay: rgba(0,0,0,0.7);
+    --drop-zone: rgba(108,92,231,0.08);
+    --drop-border: rgba(108,92,231,0.4);
+}
+
+[data-theme="light"] {
+    --bg-primary: #f0f2f5;
+    --bg-secondary: #fff;
+    --bg-card: #fff;
+    --bg-card-hover: #f5f6fa;
+    --bg-input: #f0f2f5;
+    --border: #e0e3eb;
+    --text-primary: #1a1d27;
+    --text-secondary: #5a5f7a;
+    --text-muted: #8b90a8;
+    --accent: #6c5ce7;
+    --accent-glow: rgba(108,92,231,0.2);
+    --success: #00b894;
+    --warning: #f0a500;
+    --danger: #e17055;
+    --info: #0984e3;
+    --gradient-1: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    --gradient-2: linear-gradient(135deg, #00b894, #55efc4);
+    --gradient-3: linear-gradient(135deg, #e17055, #fab1a0);
+    --gradient-4: linear-gradient(135deg, #0984e3, #74b9ff);
+    --shadow: 0 4px 24px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.1);
+    --topbar-bg: rgba(240,242,245,0.85);
+    --modal-overlay: rgba(0,0,0,0.4);
+    --drop-zone: rgba(108,92,231,0.06);
+    --drop-border: rgba(108,92,231,0.3);
+}

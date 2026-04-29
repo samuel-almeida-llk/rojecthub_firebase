@@ -1,0 +1,64 @@
+/* =============================================
+   AUTH.CSS — Tela de Login / Registro / Reset
+   ============================================= */
+#auth-screen {
+    display: none; min-height: 100vh; align-items: center; justify-content: center;
+    background: var(--bg-primary); position: relative; overflow: hidden;
+}
+#auth-screen.active { display: flex; }
+.auth-bg-orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: .15; pointer-events: none; }
+.auth-bg-orb-1 { width: 500px; height: 500px; background: var(--accent); top: -100px; right: -100px; }
+.auth-bg-orb-2 { width: 400px; height: 400px; background: #00b894; bottom: -80px; left: -80px; }
+.auth-container { width: 100%; max-width: 440px; padding: 20px; position: relative; z-index: 2; }
+.auth-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 20px; padding: 40px 36px; box-shadow: var(--shadow-lg); }
+.auth-logo { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 8px; }
+.auth-logo-icon {
+    width: 52px; height: 52px; background: var(--gradient-1); border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; font-weight: 800; color: #fff;
+}
+.auth-logo-text { font-size: 28px; font-weight: 800; background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.auth-theme-toggle { display: flex; justify-content: center; margin-bottom: 24px; }
+.auth-title { text-align: center; font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+.auth-subtitle { text-align: center; color: var(--text-muted); font-size: 14px; margin-bottom: 28px; }
+.auth-form { display: flex; flex-direction: column; gap: 16px; }
+.auth-input-group { position: relative; }
+.auth-input-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 16px; color: var(--text-muted); pointer-events: none; }
+.auth-input {
+    width: 100%; padding: 13px 14px 13px 42px; background: var(--bg-input);
+    border: 1px solid var(--border); border-radius: 12px;
+    color: var(--text-primary); font-size: 14px;
+    font-family: 'Inter', sans-serif; transition: all .3s;
+}
+.auth-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+.auth-input::placeholder { color: var(--text-muted); }
+.auth-btn {
+    width: 100%; padding: 14px; border: none; border-radius: 12px;
+    font-size: 15px; font-weight: 700; cursor: pointer; transition: all .3s;
+    font-family: 'Inter', sans-serif; display: flex; align-items: center;
+    justify-content: center; gap: 10px;
+}
+.auth-btn-primary { background: var(--gradient-1); color: #fff; box-shadow: 0 4px 20px var(--accent-glow); }
+.auth-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); }
+.auth-btn-primary:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+.auth-btn-google { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border); }
+.auth-btn-google:hover { background: var(--bg-card-hover); border-color: var(--accent); }
+.auth-divider { display: flex; align-items: center; gap: 16px; margin: 4px 0; }
+.auth-divider-line { flex: 1; height: 1px; background: var(--border); }
+.auth-divider-text { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+.auth-footer { text-align: center; margin-top: 24px; font-size: 13px; color: var(--text-muted); }
+.auth-footer a { color: var(--accent); text-decoration: none; font-weight: 600; cursor: pointer; }
+.auth-footer a:hover { text-decoration: underline; }
+.auth-error { background: rgba(225,112,85,.1); border: 1px solid rgba(225,112,85,.3); color: var(--danger); padding: 10px 14px; border-radius: 10px; font-size: 13px; display: none; text-align: center; }
+.auth-error.visible { display: block; }
+.auth-success { background: rgba(0,184,148,.1); border: 1px solid rgba(0,184,148,.3); color: var(--success); padding: 10px 14px; border-radius: 10px; font-size: 13px; display: none; text-align: center; }
+.auth-success.visible { display: block; }
+.forgot-link { text-align: right; margin-top: -8px; }
+.forgot-link a { color: var(--text-muted); font-size: 12px; text-decoration: none; cursor: pointer; }
+.forgot-link a:hover { color: var(--accent); }
+.password-toggle {
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: var(--text-muted);
+    cursor: pointer; font-size: 16px; padding: 4px;
+}
+.password-toggle:hover { color: var(--text-primary); }
