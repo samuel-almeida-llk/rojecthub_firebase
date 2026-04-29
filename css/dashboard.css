@@ -1,0 +1,122 @@
+/* =============================================
+   DASHBOARD.CSS — Charts, Stats, Gráficos
+   ============================================= */
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.chart-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    transition: all .3s;
+}
+
+.chart-card:hover {
+    box-shadow: var(--shadow);
+}
+
+.chart-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.chart-card-title {
+    font-size: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chart-card-subtitle {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart-container canvas {
+    max-height: 280px;
+}
+
+/* Full width chart */
+.chart-card.full-width {
+    grid-column: 1 / -1;
+}
+
+/* Segment list inside chart card */
+.segment-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.segment-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    padding: 4px 10px;
+    background: var(--bg-input);
+    border-radius: 8px;
+}
+
+.segment-legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.segment-legend-value {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* No data state inside chart */
+.chart-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.chart-empty-icon {
+    font-size: 36px;
+    margin-bottom: 8px;
+    opacity: .5;
+}
+
+.chart-empty-text {
+    font-size: 13px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/kanban.css">
+<link rel="stylesheet" href="css/dashboard.css">
 <link rel="stylesheet" href="css/profile.css">
 <link rel="stylesheet" href="css/responsive.css">
 </head>
@@ -20,60 +21,19 @@
 <!-- Loading -->
 <div id="loading-screen"><div class="loader"></div><div class="loader-text">Carregando ProjectHub...</div></div>
 
-<!-- ==================== AUTH SCREEN ==================== -->
+<!-- AUTH SCREEN -->
 <div id="auth-screen">
-    <div class="auth-bg-orb auth-bg-orb-1"></div>
-    <div class="auth-bg-orb auth-bg-orb-2"></div>
+    <div class="auth-bg-orb auth-bg-orb-1"></div><div class="auth-bg-orb auth-bg-orb-2"></div>
     <div class="auth-container"><div class="auth-card">
         <div class="auth-logo"><div class="auth-logo-icon">P</div><span class="auth-logo-text">ProjectHub</span></div>
         <div class="auth-theme-toggle"><button class="theme-toggle" onclick="toggleTheme()"><span class="theme-icon">🌙</span></button></div>
-
-        <!-- Login -->
-        <div id="login-form">
-            <h2 class="auth-title">Bem-vindo de volta!</h2>
-            <p class="auth-subtitle">Faça login para acessar seus projetos</p>
-            <div class="auth-error" id="login-error"></div>
-            <div class="auth-form">
-                <div class="auth-input-group"><span class="auth-input-icon">📧</span><input type="email" class="auth-input" id="login-email" placeholder="Seu e-mail" autocomplete="email"></div>
-                <div class="auth-input-group"><span class="auth-input-icon">🔒</span><input type="password" class="auth-input" id="login-password" placeholder="Sua senha" autocomplete="current-password"><button class="password-toggle" onclick="togglePassword('login-password',this)">👁</button></div>
-                <div class="forgot-link"><a onclick="showAuthForm('reset')">Esqueceu a senha?</a></div>
-                <button class="auth-btn auth-btn-primary" id="login-btn" onclick="handleLogin()"><span class="btn-spinner" id="login-spinner"></span>Entrar</button>
-                <div class="auth-divider"><div class="auth-divider-line"></div><span class="auth-divider-text">ou</span><div class="auth-divider-line"></div></div>
-                <button class="auth-btn auth-btn-google" onclick="handleGoogleLogin()"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continuar com Google</button>
-            </div>
-            <div class="auth-footer">Não tem conta? <a onclick="showAuthForm('register')">Criar conta grátis</a></div>
-        </div>
-
-        <!-- Register -->
-        <div id="register-form" style="display:none">
-            <h2 class="auth-title">Criar sua conta</h2>
-            <p class="auth-subtitle">Comece a organizar seus projetos</p>
-            <div class="auth-error" id="register-error"></div>
-            <div class="auth-form">
-                <div class="auth-input-group"><span class="auth-input-icon">👤</span><input type="text" class="auth-input" id="register-name" placeholder="Seu nome completo" autocomplete="name"></div>
-                <div class="auth-input-group"><span class="auth-input-icon">📧</span><input type="email" class="auth-input" id="register-email" placeholder="Seu e-mail" autocomplete="email"></div>
-                <div class="auth-input-group"><span class="auth-input-icon">🔒</span><input type="password" class="auth-input" id="register-password" placeholder="Senha (mín. 6 caracteres)" autocomplete="new-password"><button class="password-toggle" onclick="togglePassword('register-password',this)">👁</button></div>
-                <button class="auth-btn auth-btn-primary" id="register-btn" onclick="handleRegister()"><span class="btn-spinner" id="register-spinner"></span>Criar Conta</button>
-            </div>
-            <div class="auth-footer">Já tem conta? <a onclick="showAuthForm('login')">Fazer login</a></div>
-        </div>
-
-        <!-- Reset -->
-        <div id="reset-form" style="display:none">
-            <h2 class="auth-title">Recuperar senha</h2>
-            <p class="auth-subtitle">Enviaremos um link de recuperação</p>
-            <div class="auth-error" id="reset-error"></div>
-            <div class="auth-success" id="reset-success"></div>
-            <div class="auth-form">
-                <div class="auth-input-group"><span class="auth-input-icon">📧</span><input type="email" class="auth-input" id="reset-email" placeholder="Seu e-mail cadastrado"></div>
-                <button class="auth-btn auth-btn-primary" onclick="handleResetPassword()">Enviar Link</button>
-            </div>
-            <div class="auth-footer"><a onclick="showAuthForm('login')">← Voltar ao login</a></div>
-        </div>
+        <div id="login-form"><h2 class="auth-title">Bem-vindo de volta!</h2><p class="auth-subtitle">Faça login para acessar seus projetos</p><div class="auth-error" id="login-error"></div><div class="auth-form"><div class="auth-input-group"><span class="auth-input-icon">📧</span><input type="email" class="auth-input" id="login-email" placeholder="Seu e-mail" autocomplete="email"></div><div class="auth-input-group"><span class="auth-input-icon">🔒</span><input type="password" class="auth-input" id="login-password" placeholder="Sua senha" autocomplete="current-password"><button class="password-toggle" onclick="togglePassword('login-password',this)">👁</button></div><div class="forgot-link"><a onclick="showAuthForm('reset')">Esqueceu a senha?</a></div><button class="auth-btn auth-btn-primary" id="login-btn" onclick="handleLogin()"><span class="btn-spinner" id="login-spinner"></span>Entrar</button><div class="auth-divider"><div class="auth-divider-line"></div><span class="auth-divider-text">ou</span><div class="auth-divider-line"></div></div><button class="auth-btn auth-btn-google" onclick="handleGoogleLogin()"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continuar com Google</button></div><div class="auth-footer">Não tem conta? <a onclick="showAuthForm('register')">Criar conta grátis</a></div></div>
+        <div id="register-form" style="display:none"><h2 class="auth-title">Criar sua conta</h2><p class="auth-subtitle">Comece a organizar seus projetos</p><div class="auth-error" id="register-error"></div><div class="auth-form"><div class="auth-input-group"><span class="auth-input-icon">👤</span><input type="text" class="auth-input" id="register-name" placeholder="Seu nome completo" autocomplete="name"></div><div class="auth-input-group"><span class="auth-input-icon">📧</span><input type="email" class="auth-input" id="register-email" placeholder="Seu e-mail" autocomplete="email"></div><div class="auth-input-group"><span class="auth-input-icon">🔒</span><input type="password" class="auth-input" id="register-password" placeholder="Senha (mín. 6 caracteres)" autocomplete="new-password"><button class="password-toggle" onclick="togglePassword('register-password',this)">👁</button></div><button class="auth-btn auth-btn-primary" id="register-btn" onclick="handleRegister()"><span class="btn-spinner" id="register-spinner"></span>Criar Conta</button></div><div class="auth-footer">Já tem conta? <a onclick="showAuthForm('login')">Fazer login</a></div></div>
+        <div id="reset-form" style="display:none"><h2 class="auth-title">Recuperar senha</h2><p class="auth-subtitle">Enviaremos um link de recuperação</p><div class="auth-error" id="reset-error"></div><div class="auth-success" id="reset-success"></div><div class="auth-form"><div class="auth-input-group"><span class="auth-input-icon">📧</span><input type="email" class="auth-input" id="reset-email" placeholder="Seu e-mail cadastrado"></div><button class="auth-btn auth-btn-primary" onclick="handleResetPassword()">Enviar Link</button></div><div class="auth-footer"><a onclick="showAuthForm('login')">← Voltar ao login</a></div></div>
     </div></div>
 </div>
 
-<!-- ==================== APP SCREEN ==================== -->
+<!-- APP SCREEN -->
 <div id="app-screen">
     <aside class="sidebar">
         <div class="sidebar-header"><div class="logo"><div class="logo-icon">P</div><span class="logo-text">ProjectHub</span></div></div>
@@ -83,28 +43,12 @@
             <button class="nav-item" onclick="showPage('projects')"><span class="nav-icon">📁</span> Todos os Projetos <span class="nav-badge" id="project-count-badge">0</span></button>
             <button class="nav-item" onclick="showPage('calendar')"><span class="nav-icon">📅</span> Calendário</button>
         </nav>
-        <div class="sidebar-footer">
-            <div class="user-info">
-                <div class="sidebar-avatar-wrap" onclick="openProfileModal()"><div class="user-avatar" id="sidebar-avatar">SL</div><div class="av-badge">📷</div></div>
-                <div style="cursor:pointer" onclick="openProfileModal()"><div class="user-name" id="sidebar-name">Usuário</div><div class="user-role" id="sidebar-email">email</div></div>
-            </div>
-            <button class="logout-btn" onclick="handleLogout()">🚪 Sair</button>
-        </div>
+        <div class="sidebar-footer"><div class="user-info"><div class="sidebar-avatar-wrap" onclick="openProfileModal()"><div class="user-avatar" id="sidebar-avatar">SL</div><div class="av-badge">📷</div></div><div style="cursor:pointer" onclick="openProfileModal()"><div class="user-name" id="sidebar-name">Usuário</div><div class="user-role" id="sidebar-email">email</div></div></div><button class="logout-btn" onclick="handleLogout()">🚪 Sair</button></div>
     </aside>
-
     <div class="main-content">
-        <header class="topbar">
-            <div class="topbar-title"><h1 id="page-title">Dashboard</h1><p id="page-subtitle">Visão geral</p></div>
-            <div class="topbar-actions">
-                <div class="topbar-avatar" id="topbar-avatar" onclick="openProfileModal()" title="Meu perfil">SL</div>
-                <div class="sync-indicator"><div class="sync-dot" id="sync-dot"></div><span id="sync-text">Sincronizado</span></div>
-                <button class="theme-toggle" onclick="toggleTheme()"><span class="theme-icon">🌙</span></button>
-                <div class="search-box"><span>🔍</span><input type="text" placeholder="Buscar..." id="global-search" oninput="handleGlobalSearch(this.value)"></div>
-                <button class="btn btn-primary" onclick="openNewClientModal()">+ Novo Cliente</button>
-            </div>
-        </header>
-
+        <header class="topbar"><div class="topbar-title"><h1 id="page-title">Dashboard</h1><p id="page-subtitle">Visão geral</p></div><div class="topbar-actions"><div class="topbar-avatar" id="topbar-avatar" onclick="openProfileModal()" title="Meu perfil">SL</div><div class="sync-indicator"><div class="sync-dot" id="sync-dot"></div><span id="sync-text">Sincronizado</span></div><button class="theme-toggle" onclick="toggleTheme()"><span class="theme-icon">🌙</span></button><div class="search-box"><span>🔍</span><input type="text" placeholder="Buscar..." id="global-search" oninput="handleGlobalSearch(this.value)"></div><button class="btn btn-primary" onclick="openNewClientModal()">+ Novo Cliente</button></div></header>
         <div class="page-content">
+
             <!-- Dashboard -->
             <div class="page active" id="page-dashboard">
                 <div class="stats-grid">
@@ -113,72 +57,79 @@
                     <div class="stat-card"><div class="stat-icon">🚀</div><div class="stat-value" id="stat-in-progress">0</div><div class="stat-label">Em Andamento</div></div>
                     <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value" id="stat-completed">0</div><div class="stat-label">Concluídos</div></div>
                 </div>
+
+                <!-- CHARTS -->
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <div class="chart-card-header">
+                            <div>
+                                <div class="chart-card-title">🎯 Nichos de Atuação</div>
+                                <div class="chart-card-subtitle">Projetos por segmento</div>
+                            </div>
+                        </div>
+                        <div class="chart-container"><canvas id="chart-radar"></canvas></div>
+                        <div class="segment-legend" id="segment-legend"></div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-card-header">
+                            <div>
+                                <div class="chart-card-title">📊 Status dos Projetos</div>
+                                <div class="chart-card-subtitle">Distribuição geral</div>
+                            </div>
+                        </div>
+                        <div class="chart-container"><canvas id="chart-doughnut"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-card-header">
+                            <div>
+                                <div class="chart-card-title">🔥 Prioridades</div>
+                                <div class="chart-card-subtitle">Distribuição por prioridade</div>
+                            </div>
+                        </div>
+                        <div class="chart-container"><canvas id="chart-priority"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-card-header">
+                            <div>
+                                <div class="chart-card-title">🏆 Top Clientes</div>
+                                <div class="chart-card-subtitle">Mais projetos ativos</div>
+                            </div>
+                        </div>
+                        <div class="chart-container"><canvas id="chart-top-clients"></canvas></div>
+                    </div>
+                </div>
+
                 <div class="dashboard-grid">
                     <div class="dashboard-section"><h3>📋 Projetos Recentes</h3><div id="recent-projects"></div></div>
                     <div class="dashboard-section"><h3>⚡ Atividade Recente</h3><div id="recent-activity"></div></div>
                 </div>
             </div>
 
-            <!-- Clients -->
-            <div class="page" id="page-clients">
-                <div class="section-header"><h2>Carteira de Clientes</h2><button class="btn btn-primary" onclick="openNewClientModal()">+ Novo Cliente</button></div>
-                <div class="clients-grid" id="clients-grid"></div>
-                <div class="empty-state" id="empty-clients" style="display:none"><div class="empty-state-icon">🏢</div><h3>Nenhum cliente</h3><p>Comece adicionando seu primeiro cliente.</p><button class="btn btn-primary" style="margin-top:20px" onclick="openNewClientModal()">+ Adicionar</button></div>
-            </div>
-
-            <!-- Client Detail (Kanban) -->
-            <div class="page" id="page-client-detail">
-                <button class="project-back" onclick="showPage('clients')">← Voltar</button>
-                <div class="client-detail-header" id="client-detail-header"></div>
-                <div class="section-header"><h2>Projetos</h2><div style="display:flex;gap:8px;align-items:center"><span style="font-size:12px;color:var(--text-muted)">🖱️ Arraste entre colunas</span><button class="btn btn-primary" onclick="openNewProjectModal()">+ Novo Projeto</button></div></div>
-                <div class="kanban-board">
-                    <div class="kanban-column"><div class="kanban-column-header"><span class="kanban-column-title">📋 Backlog</span><span class="kanban-count" id="count-backlog">0</span></div><div class="kanban-cards" id="col-backlog" data-status="backlog"></div><button class="add-card-btn" onclick="openNewProjectModal('backlog')">+ Adicionar</button></div>
-                    <div class="kanban-column"><div class="kanban-column-header"><span class="kanban-column-title">🔄 Em Andamento</span><span class="kanban-count" id="count-andamento">0</span></div><div class="kanban-cards" id="col-andamento" data-status="andamento"></div><button class="add-card-btn" onclick="openNewProjectModal('andamento')">+ Adicionar</button></div>
-                    <div class="kanban-column"><div class="kanban-column-header"><span class="kanban-column-title">👀 Em Revisão</span><span class="kanban-count" id="count-revisao">0</span></div><div class="kanban-cards" id="col-revisao" data-status="revisao"></div><button class="add-card-btn" onclick="openNewProjectModal('revisao')">+ Adicionar</button></div>
-                    <div class="kanban-column"><div class="kanban-column-header"><span class="kanban-column-title">✅ Concluído</span><span class="kanban-count" id="count-concluido">0</span></div><div class="kanban-cards" id="col-concluido" data-status="concluido"></div><button class="add-card-btn" onclick="openNewProjectModal('concluido')">+ Adicionar</button></div>
-                </div>
-            </div>
-
-            <!-- All Projects -->
+            <div class="page" id="page-clients"><div class="section-header"><h2>Carteira de Clientes</h2><button class="btn btn-primary" onclick="openNewClientModal()">+ Novo Cliente</button></div><div class="clients-grid" id="clients-grid"></div><div class="empty-state" id="empty-clients" style="display:none"><div class="empty-state-icon">🏢</div><h3>Nenhum cliente</h3><p>Comece adicionando seu primeiro cliente.</p><button class="btn btn-primary" style="margin-top:20px" onclick="openNewClientModal()">+ Adicionar</button></div></div>
+            <div class="page" id="page-client-detail"><button class="project-back" onclick="showPage('clients')">← Voltar</button><div class="client-detail-header" id="client-detail-header"></div><div class="section-header"><h2>Projetos</h2><div style="display:flex;gap:8px;align-items:center"><span style="font-size:12px;color:var(--text-muted)">🖱️ Arraste entre colunas</span><button class="btn btn-primary" onclick="openNewProjectModal()">+ Novo Projeto</button></div></div><div class="kanban-board"><div class="kanban-column"><div class="kanban-column-header"><span class="kanban-column-title">📋 Backlog</span><span class="kanban-count" id="count-backlog">0</span></div><div class="kanban-cards" id="col-backlog" data-status="backlog"></div><button class="add-card-btn" onclick="openNewProjectModal('backlog')">+ Adicionar</button></div><div class="kanban-column"><div class="kanban-column-header"><span class="kanban-column-title">🔄 Em Andamento</span><span class="kanban-count" id="count-andamento">0</span></div><div class="kanban-cards" id="col-andamento" data-status="andamento"></div><button class="add-card-btn" onclick="openNewProjectModal('andamento')">+ Adicionar</button></div><div class="kanban-column"><div class="kanban-column-header"><span class="kanban-column-title">👀 Em Revisão</span><span class="kanban-count" id="count-revisao">0</span></div><div class="kanban-cards" id="col-revisao" data-status="revisao"></div><button class="add-card-btn" onclick="openNewProjectModal('revisao')">+ Adicionar</button></div><div class="kanban-column"><div class="kanban-column-header"><span class="kanban-column-title">✅ Concluído</span><span class="kanban-count" id="count-concluido">0</span></div><div class="kanban-cards" id="col-concluido" data-status="concluido"></div><button class="add-card-btn" onclick="openNewProjectModal('concluido')">+ Adicionar</button></div></div></div>
             <div class="page" id="page-projects"><div class="section-header"><h2>Todos os Projetos</h2></div><div id="all-projects-list"></div></div>
-
-            <!-- Calendar -->
-            <div class="page" id="page-calendar">
-                <div class="section-header"><h2>Calendário</h2><div style="display:flex;gap:8px"><button class="btn btn-secondary btn-sm" onclick="changeMonth(-1)">◀</button><span id="calendar-month" style="font-size:16px;font-weight:700;display:flex;align-items:center;padding:0 12px"></span><button class="btn btn-secondary btn-sm" onclick="changeMonth(1)">▶</button></div></div>
-                <div id="calendar-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px"></div>
-            </div>
+            <div class="page" id="page-calendar"><div class="section-header"><h2>Calendário</h2><div style="display:flex;gap:8px"><button class="btn btn-secondary btn-sm" onclick="changeMonth(-1)">◀</button><span id="calendar-month" style="font-size:16px;font-weight:700;display:flex;align-items:center;padding:0 12px"></span><button class="btn btn-secondary btn-sm" onclick="changeMonth(1)">▶</button></div></div><div id="calendar-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px"></div></div>
         </div>
     </div>
 </div>
 
-<!-- ==================== MODALS ==================== -->
-<!-- Client Modal -->
+<!-- MODALS -->
 <div class="modal-overlay" id="modal-client"><div class="modal"><div class="modal-header"><h3 id="modal-client-title">Novo Cliente</h3><button class="modal-close" onclick="closeModal('modal-client')">✕</button></div><div class="modal-body"><input type="hidden" id="client-edit-id"><div class="form-group"><label>Nome *</label><input type="text" class="form-control" id="client-name" placeholder="Ex: M. Dias Branco"></div><div class="form-row"><div class="form-group"><label>Segmento</label><select class="form-control" id="client-segment"><option>Tecnologia</option><option>Financeiro</option><option>Saúde</option><option>Educação</option><option>Governo</option><option>Indústria</option><option>Varejo</option><option>Serviços</option><option>Outro</option></select></div><div class="form-group"><label>Contato</label><input type="text" class="form-control" id="client-contact" placeholder="Nome"></div></div><div class="form-group"><label>E-mail</label><input type="email" class="form-control" id="client-email" placeholder="email@empresa.com"></div><div class="form-group"><label>Observações</label><textarea class="form-control" id="client-notes" placeholder="Anotações..."></textarea></div><div class="form-group"><label>Cor</label><div class="color-options" id="client-colors"><div class="color-option selected" data-color="#6c5ce7" style="background:linear-gradient(135deg,#6c5ce7,#a29bfe)"></div><div class="color-option" data-color="#0984e3" style="background:linear-gradient(135deg,#0984e3,#74b9ff)"></div><div class="color-option" data-color="#00b894" style="background:linear-gradient(135deg,#00b894,#55efc4)"></div><div class="color-option" data-color="#e17055" style="background:linear-gradient(135deg,#e17055,#fab1a0)"></div><div class="color-option" data-color="#fdcb6e" style="background:linear-gradient(135deg,#fdcb6e,#ffeaa7)"></div><div class="color-option" data-color="#e84393" style="background:linear-gradient(135deg,#e84393,#fd79a8)"></div><div class="color-option" data-color="#00cec9" style="background:linear-gradient(135deg,#00cec9,#81ecec)"></div><div class="color-option" data-color="#636e72" style="background:linear-gradient(135deg,#636e72,#b2bec3)"></div></div></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('modal-client')">Cancelar</button><button class="btn btn-primary" onclick="saveClient()">Salvar</button></div></div></div>
-
-<!-- Project Modal -->
 <div class="modal-overlay" id="modal-project"><div class="modal"><div class="modal-header"><h3 id="modal-project-title">Novo Projeto</h3><button class="modal-close" onclick="closeModal('modal-project')">✕</button></div><div class="modal-body"><input type="hidden" id="project-edit-id"><div class="form-group"><label>Nome *</label><input type="text" class="form-control" id="project-name" placeholder="Ex: Adoção Copilot"></div><div class="form-group"><label>Descrição</label><textarea class="form-control" id="project-desc" placeholder="Descreva..."></textarea></div><div class="form-row"><div class="form-group"><label>Status</label><select class="form-control" id="project-status"><option value="backlog">📋 Backlog</option><option value="andamento">🔄 Em Andamento</option><option value="revisao">👀 Em Revisão</option><option value="concluido">✅ Concluído</option></select></div><div class="form-group"><label>Prioridade</label><select class="form-control" id="project-priority"><option value="baixa">🟢 Baixa</option><option value="media">🟡 Média</option><option value="alta">🔴 Alta</option></select></div></div><div class="form-row"><div class="form-group"><label>Início</label><input type="date" class="form-control" id="project-start"></div><div class="form-group"><label>Entrega</label><input type="date" class="form-control" id="project-deadline"></div></div><div class="form-group"><label>Responsável</label><input type="text" class="form-control" id="project-owner" placeholder="Nome"></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('modal-project')">Cancelar</button><button class="btn btn-primary" onclick="saveProject()">Salvar</button></div></div></div>
-
-<!-- Project Detail Modal -->
 <div class="modal-overlay" id="modal-project-detail"><div class="modal" style="max-width:600px"><div class="modal-header"><h3 id="detail-project-name">Detalhes</h3><button class="modal-close" onclick="closeModal('modal-project-detail')">✕</button></div><div class="modal-body" id="project-detail-body"></div><div class="modal-footer"><button class="btn btn-danger btn-sm" onclick="deleteProjectFromDetail()">🗑 Excluir</button><button class="btn btn-secondary btn-sm" onclick="editProjectFromDetail()">✏️ Editar</button><button class="btn btn-primary btn-sm" onclick="closeModal('modal-project-detail')">Fechar</button></div></div></div>
-
-<!-- Confirm Modal -->
 <div class="modal-overlay" id="modal-confirm"><div class="modal" style="max-width:400px"><div class="modal-header"><h3>⚠️ Confirmar</h3><button class="modal-close" onclick="closeModal('modal-confirm')">✕</button></div><div class="modal-body"><p id="confirm-message" style="font-size:14px;line-height:1.6;color:var(--text-secondary)"></p></div><div class="modal-footer"><button class="btn btn-secondary btn-sm" onclick="closeModal('modal-confirm')">Cancelar</button><button class="btn btn-danger btn-sm" id="confirm-btn">Confirmar</button></div></div></div>
-
-<!-- Profile Modal -->
 <div class="modal-overlay" id="modal-profile"><div class="modal" style="max-width:420px"><div class="modal-header"><h3>👤 Meu Perfil</h3><button class="modal-close" onclick="closeModal('modal-profile')">✕</button></div><div class="modal-body" style="text-align:center"><div class="profile-avatar-lg" id="profile-avatar-lg" onclick="triggerAvatarUpload()"><div class="av-overlay"><span class="av-overlay-icon">📷</span><span>Alterar foto</span></div><span id="profile-av-content">SL</span></div><div class="profile-name" id="profile-name-disp">Usuário</div><div class="profile-email" id="profile-email-disp">email</div><div class="profile-actions"><button class="profile-btn" onclick="triggerAvatarUpload()"><span class="p-icon">📷</span><span class="p-text">Alterar foto de perfil</span><span class="p-arr">›</span></button><button class="profile-btn" onclick="removeAvatar()"><span class="p-icon">🗑️</span><span class="p-text">Remover foto</span><span class="p-arr">›</span></button><button class="profile-btn" onclick="openEditNameModal()"><span class="p-icon">✏️</span><span class="p-text">Alterar nome</span><span class="p-arr">›</span></button><button class="profile-btn danger" onclick="closeModal('modal-profile');handleLogout()"><span class="p-icon">🚪</span><span class="p-text">Sair da conta</span><span class="p-arr">›</span></button></div></div></div></div>
-
-<!-- Edit Name Modal -->
 <div class="modal-overlay" id="modal-edit-name"><div class="modal" style="max-width:400px"><div class="modal-header"><h3>✏️ Alterar Nome</h3><button class="modal-close" onclick="closeModal('modal-edit-name')">✕</button></div><div class="modal-body"><div class="form-group"><label>Nome completo</label><input type="text" class="form-control" id="edit-name-input" placeholder="Seu nome"></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('modal-edit-name')">Cancelar</button><button class="btn btn-primary" onclick="saveNewName()">Salvar</button></div></div></div>
-
 <input type="file" id="avatar-file-input" accept="image/*" style="display:none" onchange="handleAvatarUpload(event)">
 <div class="toast-container" id="toast-container"></div>
 
-<!-- Firebase SDK (CDN compat) -->
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
-<!-- App Entry Point (ES Module) -->
+<!-- App -->
 <script type="module" src="js/app.js"></script>
 </body>
 </html>

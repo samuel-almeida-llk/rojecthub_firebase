@@ -2,11 +2,12 @@
 // APP.JS — Entry Point: imports + inicialização
 // =============================================
 import { auth, db } from './config/firebase.js';
-import { getTheme, setTheme, toggleTheme } from './modules/theme.js';
+import { getTheme, setTheme, toggleTheme, onThemeChange } from './modules/theme.js';
 import { showAuthForm, togglePassword, handleLogin, handleRegister, handleGoogleLogin, handleResetPassword, handleLogout } from './modules/auth.js';
 import { openModal, closeModal, initModalOverlays } from './modules/modal.js';
 import { showPage, registerPageCallback } from './modules/router.js';
 import { loadUserProfile, updateAllAvatars, openProfileModal, triggerAvatarUpload, handleAvatarUpload, removeAvatar, openEditNameModal, saveNewName } from './modules/profile.js';
+import { renderCharts, destroyAllCharts } from './modules/charts.js';
 import { showToast } from './utils/toast.js';
 import { sanitize } from './utils/sanitize.js';
 import { uid, formatDate, timeAgo, getGradient, getTP } from './utils/helpers.js';
@@ -15,6 +16,9 @@ import * as store from './modules/store.js';
 
 // ---- Inicializar tema ----
 setTheme(getTheme());
+
+// ---- Re-render charts quando tema muda ----
+onThemeChange(() => { destroyAllCharts(); renderCharts(); });
 
 // ---- Expor funções ao escopo global (para onclick inline do HTML) ----
 window.toggleTheme = toggleTheme;
@@ -193,7 +197,6 @@ window.chgStatus = async function(pid, ns) {
     p.status = ns; store.logActivity(`<strong>${sanitize(p.name)}</strong> → <strong>${STATUS_LABELS[ns]}</strong>`);
     await store.saveData(); window.openProjectDetail(pid); renderClientDetail();
 };
-
 window.deleteProjectFromDetail = function() { window.confirmDeleteProject(store.currentProjectId); };
 window.editProjectFromDetail = function() { closeModal('modal-project-detail'); window.editProject(store.currentProjectId); };
 
@@ -271,7 +274,7 @@ function getAfter(z, y) {
 }
 
 // =========================================================
-// DASHBOARD
+// DASHBOARD (com Charts)
 // =========================================================
 function renderDashboard() {
     const all = store.data.clients.flatMap(c => (c.projects || []).map(p => ({ ...p, clientName: c.name })));
@@ -284,6 +287,9 @@ function renderDashboard() {
     rc.innerHTML = !re.length ? '<p style="color:var(--text-muted);font-size:13px;padding:20px;text-align:center">Nenhum projeto</p>' : re.map(p => `<div class="activity-item" style="cursor:pointer" onclick="goToProject('${p.clientId}','${p.id}')"><span class="status-dot ${p.status}"></span><div style="flex:1"><div style="font-size:13px;font-weight:600">${sanitize(p.name)}</div><div style="font-size:11px;color:var(--text-muted)">${sanitize(p.clientName)}</div></div><span class="priority-badge priority-${p.priority}">${p.priority}</span></div>`).join('');
     const ac = document.getElementById('recent-activity');
     ac.innerHTML = !store.data.activities.length ? '<p style="color:var(--text-muted);font-size:13px;padding:20px;text-align:center">Nenhuma atividade</p>' : store.data.activities.slice(0, 8).map(a => `<div class="activity-item"><div class="activity-dot" style="background:var(--accent)"></div><span class="activity-text">${a.text}</span><span class="activity-time">${timeAgo(new Date(a.time))}</span></div>`).join('');
+
+    // Renderizar gráficos
+    renderCharts();
     updateBadges();
 }
 
@@ -296,7 +302,7 @@ function renderAllProjects() {
     const ct = document.getElementById('all-projects-list');
     const all = store.data.clients.flatMap(c => (c.projects || []).map(p => ({ ...p, clientName: c.name, clientId: c.id })));
     if (!all.length) { ct.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📁</div><h3>Nenhum projeto</h3></div>'; return; }
-    ct.innerHTML = `<div style="display:grid;gap:10px">${all.sort((a, b) => PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]).map(p => `<div class="activity-item" style="cursor:pointer" onclick="store.setCurrentClientId('${p.clientId}');openProjectDetail('${p.id}')"><span class="status-dot ${p.status}"></span><div style="flex:1"><div style="font-size:14px;font-weight:600">${sanitize(p.name)}</div><div style="font-size:12px;color:var(--text-muted)">${sanitize(p.clientName)}${p.owner ? ' • ' + sanitize(p.owner) : ''}${p.deadline ? ' • 📅 ' + formatDate(p.deadline) : ''}</div></div><span class="priority-badge priority-${p.priority}">${p.priority}</span></div>`).join('')}</div>`;
+    ct.innerHTML = `<div style="display:grid;gap:10px">${all.sort((a, b) => PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]).map(p => `<div class="activity-item" style="cursor:pointer" onclick="currentClientId='${p.clientId}';openProjectDetail('${p.id}')"><span class="status-dot ${p.status}"></span><div style="flex:1"><div style="font-size:14px;font-weight:600">${sanitize(p.name)}</div><div style="font-size:12px;color:var(--text-muted)">${sanitize(p.clientName)}${p.owner ? ' • ' + sanitize(p.owner) : ''}${p.deadline ? ' • 📅 ' + formatDate(p.deadline) : ''}</div></div><span class="priority-badge priority-${p.priority}">${p.priority}</span></div>`).join('')}</div>`;
 }
 
 // =========================================================
@@ -339,9 +345,7 @@ function updateBadges() {
     document.getElementById('client-count-badge').textContent = store.data.clients.length;
     document.getElementById('project-count-badge').textContent = store.data.clients.reduce((s, c) => s + (c.projects?.length || 0), 0);
 }
-
 function renderAll() { updateBadges(); renderDashboard(); }
-
 function setupColorPickers() {
     document.querySelectorAll('#client-colors .color-option').forEach(o => {
         o.classList.remove('selected');
@@ -352,7 +356,6 @@ function setupColorPickers() {
         };
     });
 }
-
 function listen() {
     if (!store.currentUser) return;
     const unsub = store.getUnsubSnap();
